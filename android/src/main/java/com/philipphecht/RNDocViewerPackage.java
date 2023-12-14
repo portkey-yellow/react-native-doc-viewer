@@ -1,4 +1,3 @@
-
 package com.philipphecht;
 
 import java.util.Arrays;

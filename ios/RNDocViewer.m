@@ -125,10 +125,10 @@ RCT_EXPORT_METHOD(openDoc:(NSArray *)array callback:(RCTResponseSenderBlock)call
             while (root.presentedViewController) {
                 root = [root presentedViewController];
             }
-            
-          
+
+
             [root presentViewController:cntr animated:YES completion:^{
-                
+
             }];
         });
 
@@ -251,8 +251,8 @@ RCT_EXPORT_METHOD(playMovie:(NSString *)file callback:(RCTResponseSenderBlock)ca
 {
     //NSDictionary* dict = [array objectAtIndex:0];
     NSString *_uri = file;
-    
-    
+
+
     NSURL *fileURL = nil;
     if ([_uri containsString:@"http"] || [_uri containsString:@"https"]) {
         fileURL = [NSURL URLWithString:_uri];
@@ -262,25 +262,25 @@ RCT_EXPORT_METHOD(playMovie:(NSString *)file callback:(RCTResponseSenderBlock)ca
         fileURL = [NSURL fileURLWithPath:mediaFilePath];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-        
+
         AVPlayerViewController *movieViewController = [[AVPlayerViewController alloc] init];
-        
+
         movieViewController.player = [AVPlayer playerWithURL:fileURL];
-        
+
         [movieViewController.player play];
-        
+
         movieViewController = movieViewController;
-        
+
         UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
         UIView *view = [ctrl view];
-        
+
         view.window.windowLevel = UIWindowLevelStatusBar;
         if (callback) {
             callback(@[[NSNull null], @"true"]);
         }
-        
+
         [ctrl presentViewController:movieViewController animated:TRUE completion: nil];
-        
+
     });
 }
 //Dismiss QuickViewController
@@ -313,15 +313,15 @@ RCT_EXPORT_METHOD(playMovie:(NSString *)file callback:(RCTResponseSenderBlock)ca
 //Download Task example
 - (void)hitServerForUrl:(NSString*)urlString {
     NSURL *requestUrl = [NSURL URLWithString:urlString];
-    
+
     NSURLSessionConfiguration *defaultConfigurationObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-    
+
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigurationObject delegate:self delegateQueue: nil];
-    
+
     NSURLSessionDownloadTask *fileDownloadTask = [defaultSession downloadTaskWithURL:requestUrl];
-    
+
     [fileDownloadTask resume];
-    
+
 }
 
 
@@ -354,24 +354,24 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
 
 
 RCT_EXPORT_METHOD(showAlert:(NSString *)msg) {
-    
+
     // We'll show UIAlerView to know listener successful.
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:msg delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     dispatch_async(dispatch_get_main_queue(), ^{
         [alert show];
     });
-    
-    
+
+
 }
 
 #pragma mark - UIAlertView delegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
+
     if (buttonIndex == 0) {
         // Sent event tap on Cancel
         [self sendEventWithName:@"CancelEvent" body:@"Tap on Cancel"];
-        
+
     } else if (buttonIndex == 1) {
         // Sent event tap on Ok
         [self sendEventWithName:@"OKEvent" body:@"Tap on OK"];
@@ -380,18 +380,18 @@ RCT_EXPORT_METHOD(showAlert:(NSString *)msg) {
 
 /*- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
  didFinishDownloadingToURL:(NSURL *)location {
- 
+
  NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
  NSURL *documentsDirectoryURL = [NSURL fileURLWithPath:documentsPath];
  NSURL *documentURL = [documentsDirectoryURL URLByAppendingPathComponent:[downloadTask.response suggestedFilename]];
  NSError *error;
- 
+
  NSString *filePath = [documentsPath stringByAppendingPathComponent:[downloadTask.response suggestedFilename]];
  NSLog(@"file path : %@", filePath);
  if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
  //Remove the old file from directory
  }
- 
+
  [[NSFileManager defaultManager] moveItemAtURL:location
  toURL:documentURL
  error:&error];

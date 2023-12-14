@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.philipphecht">
- <application>
-      <provider
+    <application>
+        <provider
             android:name="com.philipphecht.FileProviderClass"
             android:authorities="${applicationId}.docViewer_provider"
             android:exported="false"
@@ -10,6 +10,4 @@
                 android:resource="@xml/filepaths" />
         </provider>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>
